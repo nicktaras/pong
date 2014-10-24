@@ -1,0 +1,79 @@
+<html>
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<title>Pong</title>
+
+<!-- libraries -->
+<script language="javascript" src="Library/jQuery.js"></script>
+
+<!-- game objects -->
+<script language="javascript" src="Levels/Level.js"></script>
+<script language="javascript" src="Objects/Stage.js"></script>
+<script language="javascript" src="Objects/Ball.js"></script>
+<script language="javascript" src="Objects/Bricks.js"></script>
+<script language="javascript" src="Objects/Paddle.js"></script>
+<script language="javascript" src="Objects/Walls.js"></script>
+
+<!-- engine -->
+<script language="javascript" src="Engine/engine.js"></script>
+
+</head>
+
+<body>
+
+<canvas id="pongCanvas" height="480" width="550" style="border:1px solid #000;"></canvas>
+
+<script type="text/javascript">
+var canvas = document.getElementById('pongCanvas'); //Variable reference to Canvas
+var ctx = canvas.getContext('2d'); // 2-D context
+var timer = setInterval(loop, 1); // timer set, triggers the function loop each 25th of a second.   
+//controller
+var move = ''; // string changes when user interacts with game
+
+function loop() { // this function paints the stage each frame
+	
+	//draw clear black stage
+	ctx.fillStyle = "#000";
+	ctx.fillRect(0,0,stage.stageWidth,stage.stageHeight);
+	
+	checkGameOver();
+	drawWalls();
+	drawBall();
+	drawPaddle();
+	checkPaddleCollision();
+	checkWallCollisions();
+	drawBricks();
+	
+ ball.ballX += ball.speedX; //
+ ball.ballY += ball.speedY; //
+	
+	//user control
+	if(move == 'left' && paddle.paddlePosX >= walls.wallLeftX + walls.wallWidth + paddle.paddleSpeed){
+		paddle.paddlePosX -= paddle.paddleSpeed;
+	} else if(move == 'right' && paddle.paddlePosX <= walls.wallRightX - paddle.paddleWidth - paddle.paddleSpeed) {
+		paddle.paddlePosX += paddle.paddleSpeed;
+	}
+	
+}
+
+$(document).keydown(function(e){
+	if (e.keyCode == 37) { //left key pressed
+	   	move = 'left';
+	} 
+	if (e.keyCode == 39) { //right key pressed
+	   	move = 'right';
+	}
+});
+
+$(document).keyup(function(e){ // stop paddle when key is lifted
+	move = 'stop';
+});
+
+</script>
+
+</body>
+
+</html>
